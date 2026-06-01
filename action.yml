@@ -1,5 +1,5 @@
 name: 'Relnx — Check Outdated Tools'
-description: 'Fail CI when your cloud-native tools are behind, or have unacknowledged security patches / breaking changes (data from relnx.io).'
+description: 'Fail CI when your cloud-native tools are outdated or have security/breaking changes (data: relnx.io).'
 author: 'Relnx'
 branding:
   icon: 'alert-triangle'
