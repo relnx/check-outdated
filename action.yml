@@ -1,0 +1,41 @@
+name: 'Relnx — Check Outdated Tools'
+description: 'Fail CI when your cloud-native tools are behind, or have unacknowledged security patches / breaking changes (data from relnx.io).'
+author: 'Relnx'
+branding:
+  icon: 'alert-triangle'
+  color: 'blue'
+
+inputs:
+  tools:
+    description: >
+      Explicit list of tools to check, one "slug@version" per line
+      (e.g. "argo-cd@2.10.0"). Optional if chart-lock is provided.
+    required: false
+    default: ''
+  chart-lock:
+    description: 'Path to a Helm Chart.lock file to read dependencies from.'
+    required: false
+    default: ''
+  fail-on:
+    description: >
+      When to fail the job: "security" (any unacknowledged security fix),
+      "breaking" (any breaking change), "outdated" (any tool behind), or
+      "none" (report only, never fail).
+    required: false
+    default: 'security'
+  api-url:
+    description: 'Relnx check-outdated API endpoint.'
+    required: false
+    default: 'https://relnx.io/api/v1/check-outdated'
+
+outputs:
+  outdated:
+    description: 'Number of tools that are behind the latest version.'
+  security:
+    description: 'Number of tools with security fixes since your version.'
+  breaking:
+    description: 'Number of tools with breaking changes since your version.'
+
+runs:
+  using: 'node20'
+  main: 'index.js'
