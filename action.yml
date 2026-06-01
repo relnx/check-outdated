@@ -8,8 +8,9 @@ branding:
 inputs:
   api-key:
     description: >
-      Your Relnx API key (Enterprise). Generate one in Relnx → Settings → API
-      Keys and store it as a repo secret, e.g. ${{ secrets.RELNX_API_KEY }}.
+      Your Relnx API key (Enterprise). Generate one in Relnx → Profile →
+      Integrations → API Keys and store it as a repo secret, e.g.
+      ${{ secrets.RELNX_API_KEY }}.
     required: true
   tools:
     description: >
