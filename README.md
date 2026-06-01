@@ -7,6 +7,12 @@ release**, or — more importantly — when they have **security fixes** or
 
 > Published to the GitHub Marketplace as `relnx/check-outdated@v1`.
 
+## Requirements
+
+This action needs a **Relnx API key**, available on the **Enterprise** plan.
+Generate one in **Relnx → Settings → API Keys**, then add it to your repo as a
+secret (e.g. `RELNX_API_KEY`).
+
 ## Usage
 
 ```yaml
@@ -24,12 +30,14 @@ jobs:
       # Option A — read a Helm Chart.lock
       - uses: relnx/check-outdated@v1
         with:
+          api-key: ${{ secrets.RELNX_API_KEY }}
           chart-lock: ./charts/platform/Chart.lock
           fail-on: security
 
       # Option B — list tools explicitly
       - uses: relnx/check-outdated@v1
         with:
+          api-key: ${{ secrets.RELNX_API_KEY }}
           tools: |
             argo-cd@2.10.0
             cert-manager@1.14.0
@@ -41,6 +49,7 @@ jobs:
 
 | Input        | Default                                  | Description |
 |--------------|------------------------------------------|-------------|
+| `api-key`    | — (**required**)                         | Relnx API key (Enterprise). Store as a secret. |
 | `tools`      | `''`                                     | Tools to check, one `slug@version` per line. |
 | `chart-lock` | `''`                                     | Path to a Helm `Chart.lock`; its dependencies are read automatically. |
 | `fail-on`    | `security`                               | `security` \| `breaking` \| `outdated` \| `none`. |

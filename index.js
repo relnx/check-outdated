@@ -64,7 +64,7 @@ function parseChartLock(path) {
   return out
 }
 
-function postJSON(apiUrl, body) {
+function postJSON(apiUrl, body, apiKey) {
   return new Promise((resolve, reject) => {
     const u = new URL(apiUrl)
     const payload = JSON.stringify(body)
@@ -77,6 +77,7 @@ function postJSON(apiUrl, body) {
           'Content-Type': 'application/json',
           'Content-Length': Buffer.byteLength(payload),
           'User-Agent': 'relnx-check-outdated-action',
+          Authorization: `Bearer ${apiKey}`,
         },
       },
       (res) => {
@@ -110,6 +111,11 @@ async function main() {
   const failOn = (getInput('fail-on') || 'security').toLowerCase()
   const apiUrl = getInput('api-url') || 'https://relnx.io/api/v1/check-outdated'
 
+  const apiKey = getInput('api-key')
+  if (!apiKey) {
+    fail('`api-key` is required — generate one in Relnx → Settings → API Keys and pass it via secrets (e.g. ${{ secrets.RELNX_API_KEY }})')
+  }
+
   let tools = parseToolsInput(getInput('tools'))
 
   const chartLock = getInput('chart-lock')
@@ -130,8 +136,13 @@ async function main() {
 
   let resp
   try {
-    resp = await postJSON(apiUrl, { tools })
+    resp = await postJSON(apiUrl, { tools }, apiKey)
   } catch (e) {
+    if (/\b401\b/.test(e.message)) {
+      fail('Relnx API rejected the key (401) — check your `api-key` secret is valid and not revoked')
+    } else if (/\b403\b/.test(e.message)) {
+      fail('Relnx API access is not enabled for your plan (403) — this feature requires an Enterprise plan')
+    }
     fail(`failed to call Relnx API: ${e.message}`)
     return
   }
