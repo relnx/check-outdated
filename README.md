@@ -10,8 +10,8 @@ release**, or — more importantly — when they have **security fixes** or
 ## Requirements
 
 This action needs a **Relnx API key**, available on the **Enterprise** plan.
-Generate one in **Relnx → Profile → Integrations → API Keys**, then add it to
-your repo as a secret (e.g. `RELNX_API_KEY`).
+Generate one in **Relnx → Org → Settings → API Keys**, then add it to your repo
+as a secret (e.g. `RELNX_API_KEY`).
 
 ## Usage
 

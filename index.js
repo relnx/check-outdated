@@ -113,7 +113,7 @@ async function main() {
 
   const apiKey = getInput('api-key')
   if (!apiKey) {
-    fail('`api-key` is required — generate one in Relnx → Profile → Integrations → API Keys and pass it via secrets (e.g. ${{ secrets.RELNX_API_KEY }})')
+    fail('`api-key` is required — generate one in Relnx → Org → Settings → API Keys and pass it via secrets (e.g. ${{ secrets.RELNX_API_KEY }})')
   }
 
   let tools = parseToolsInput(getInput('tools'))
